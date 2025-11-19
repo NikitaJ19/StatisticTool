@@ -1,0 +1,69 @@
+﻿@model StatisticsToolWebUi.Models.ChartModel
+
+
+<canvas id="lineChart" width="800" height="400"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    @if (Model != null)
+    {
+            <text>
+            const chartData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model));
+
+            console.log("Chart data:", chartData);
+
+            // Create simple chart
+            new Chart(document.getElementById("lineChart"), {
+                type: "line",
+                data: {
+                    labels: chartData.time,
+                    datasets: [
+                        {
+                            label: "Feature Count",
+                            data: chartData.featureData,
+                            borderColor: "rgb(54, 162, 235)",
+                            backgroundColor: "rgb(54, 162, 235)",
+                            borderWidth: 2
+                        },
+                        {
+                            label: "Bug Count",
+                            data: chartData.bugData,
+                            borderColor: "rgb(255, 99, 132)",
+                            backgroundColor: "rgb(255, 99, 132)",
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Count'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Time'
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Work Item Statistics'
+                        },
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+            </text>
+    }
+</script>

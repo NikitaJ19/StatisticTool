@@ -1,0 +1,53 @@
+﻿@model List<StatisticsToolDbDevOpsLibrary.Models.WorkItemDto>
+@{
+    ViewData["Title"] = "Work Item Statistics";
+}
+
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Work Item Type</th>
+                        <th>Count</th>
+                        <th>Created On</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderByDescending(x => x.createdOn))
+                    {
+                        <tr>
+                            <td>
+                                <span>@item.workItemType</span>
+                            </td>
+                            <td>
+                                <strong>@item.workItemCount</strong>
+                            </td>
+                            <td>
+                                @item.createdOn.ToString("yyyy-MM-dd HH:mm:ss")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <h4>No Data Available</h4>
+        </div>
+    }
+</div>
